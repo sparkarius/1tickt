@@ -15,7 +15,7 @@ $videoUploadData = new VideoUploadData(
                                         $_POST["descriptionInput"],
                                         $_POST["privacyInput"],
                                         $_POST["categoryInput"],
-                                        "REPLACEE-THIS"
+                                        $userLoggedInObj->getUsername()
                                       );
 
 // 2) Process video data (upload)
@@ -24,7 +24,7 @@ $wasSuccessful = $videoProcessor->upload($videoUploadData);
 
 // 3) Check if upload was successful
 if ($wasSuccessful) {
-  echo "Upload successful."
+  echo "Upload successful.";
 }
 
 ?>
