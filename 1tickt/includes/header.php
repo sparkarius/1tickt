@@ -1,4 +1,16 @@
-<?php require_once("includes/config.php"); ?>
+<?php 
+require_once("includes/config.php"); 
+require_once("includes/classes/ButtonProvider.php");
+require_once("includes/classes/User.php");
+require_once("includes/classes/Video.php");
+require_once("includes/classes/VideoGrid.php");
+require_once("includes/classes/VideoGridItem.php");
+require_once("includes/classes/SubscriptionsProvider.php");
+require_once("includes/classes/NavigationMenuProvider.php");
+
+$usernameLoggedIn = User::isLoggedIn() ? $_SESSION["userLoggedIn"] : "";
+$userLoggedInObj = new User($connectionString, $usernameLoggedIn);
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +20,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
     <script src="assets/js/commonActions.js"></script>
+    <script src="assets/js/userActions.js"></script>
 </head>
 <body>
     <div id="pageContainer">
@@ -34,14 +47,15 @@
                 <a href="upload.php">
                     <img class="upload" src="assets/images/icons/upload.png">
                 </a>
-                <a href="#">
-                    <img class="upload" src="assets/images/profilePictures/default.png">
-                </a>
+                <?php echo ButtonProvider::createUserProfileNavigationButton($connectionString, $userLoggedInObj->getUsername()); ?>
             </div>
         </div>
 
         <div id="sideNavContainer" style="display:none;"> <!-- Navigation Panel -->
-
+            <?php 
+                $navigationProvider = new NavigationMenuProvider($connectionString, $userLoggedInObj);
+                echo $navigationProvider->create();
+            ?>
         </div>
 
         <div id="mainSectionContainer"> <!-- Navigation -->
